@@ -1,19 +1,19 @@
 console.log('Hello from Javascript')
 
-// const fs = require('fs')
+const fs = require('fs')
 
-// const express = require('express')
+const express = require('express')
 
-// const app = express()
+const app = express()
 
-// app.get('/home', (req, res, next) => {
-//   console.log('in get request handler')
-//   res.send(`<h1>Welcome to the Home Page</h1>`)
-// })
+app.get('/home', (req, res, next) => {
+  console.log('in get request handler')
+  res.send(`<h1>Welcome to the Home Page</h1>`)
+})
 
-// app.get('/contact', (req, res, next) => {
-//   res.send(`<h1>Welcome to the Contact Page</h1>`)
-// })
+app.get('/contact', (req, res, next) => {
+  res.send(`<h1>Welcome to the Contact Page</h1>`)
+})
 
 // app.listen(8000)
 
