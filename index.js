@@ -56,20 +56,6 @@ const fakeJSON = [
   },
 ]
 
-// function makeTableHead(table, data) {
-//   let thead = table.createTHead()
-//   let row = thead.insertRow()
-//   for (let key of data) {
-//     let th = document.createElement('th')
-//     let text = document.createTextNode(key)
-//     th.appendChild(text)
-//     row.appendChild(th)
-//   }
-// }
-
-// let table = document.querySelector('table')
-// let data = Object.keys(mountains[0])
-
 function buildTable() {
   // Create the table and table heads
   var table = document.createElement('table')
@@ -85,15 +71,16 @@ function buildTable() {
   for (var i = 0; i < columns.length; i++) {
     var th = document.createElement('th') // TABLE HEADER.
     th.innerHTML = columns[i]
+    th.className = 'table-head'
     tr.appendChild(th)
   }
 
   // ADD JSON DATA TO THE TABLE AS ROWS.
-  for (var i = 0; i < fakeJSON.length; i++) {
+  for (var g = 0; g < fakeJSON.length; g++) {
     tr = table.insertRow(-1)
-
+    tr.className = 'single-row'
     // grabbing score arrays
-    let scores = fakeJSON[i]['submissions'].map(elem => {
+    let scores = fakeJSON[g]['submissions'].map(elem => {
       return elem['score']
     })
     let divisor = scores.length
@@ -107,19 +94,27 @@ function buildTable() {
 
       // Activity name
       if (columns[j] === 'Activity') {
-        let activityName = fakeJSON[i]['name']
-        tCell.innerHTML = `Unit ${i + 1}: ${activityName}`
+        let activityName = fakeJSON[g]['name']
+        tCell.innerHTML = `Unit ${g + 1}: ${activityName}`
       }
 
       // projects created, attempts
       if (columns[j] === 'Project(s) Created') {
-        let numberOfAttempts = fakeJSON[i]['submissions'].length
+        let numberOfAttempts = fakeJSON[g]['submissions'].length
         if (numberOfAttempts === 0) {
           tCell.innerHTML = 'N/A'
         } else if (numberOfAttempts === 1) {
-          tCell.innerHTML = '1 Attempt'
+          let singleAttempt = '1 Attempt'
+          let token = fakeJSON[g]['submissions'][0]['token']
+          let hyplink = singleAttempt.link(
+            `https://www.vidcode.com/share/${token}`
+          )
+          tCell.innerHTML = hyplink
         } else {
-          tCell.innerHTML = `${numberOfAttempts} Attempts`
+          let attempts = `${numberOfAttempts} Attempts`
+          let token = fakeJSON[g]['submissions'][divisor - 1]['token']
+          let hyplink = attempts.link(`https://www.vidcode.com/share/${token}`)
+          tCell.innerHTML = hyplink
         }
       }
 
@@ -140,14 +135,6 @@ function buildTable() {
           tCell.innerHTML = 'N/A'
         }
       }
-
-      // if (divisor && columns[j] === 'Average Score') {
-      //   tCell.innerHTML = `${Math.round(sum / divisor)}%`
-      // } else if (divisor && columns[j] === 'Best Score') {
-      //   tCell.innerHTML = `${Math.max(...scores)}`
-      // } else {
-      //   tCell.innerHTML = 'N/A'
-      // }
     }
   }
   // add the table with the added rows to a container
