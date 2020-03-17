@@ -92,62 +92,68 @@ function buildTable() {
   for (var i = 0; i < fakeJSON.length; i++) {
     tr = table.insertRow(-1)
 
-    // var tabCell = tr.insertCell(-1)
-    // tabCell.innerHTML = 'test'
-
-    // grabbing scores
+    // grabbing score arrays
     let scores = fakeJSON[i]['submissions'].map(elem => {
       return elem['score']
     })
     let divisor = scores.length
 
+    let sum = scores.reduce(function(a, b) {
+      return a + b
+    }, 0)
+
     for (var j = 0; j < columns.length; j++) {
-      var tabCell = tr.insertCell(-1)
+      var tCell = tr.insertCell(-1)
 
       // Activity name
       if (columns[j] === 'Activity') {
         let activityName = fakeJSON[i]['name']
-        tabCell.innerHTML = `Unit ${i + 1}: ${activityName}`
+        tCell.innerHTML = `Unit ${i + 1}: ${activityName}`
       }
 
       // projects created, attempts
       if (columns[j] === 'Project(s) Created') {
         let numberOfAttempts = fakeJSON[i]['submissions'].length
         if (numberOfAttempts === 0) {
-          tabCell.innerHTML = 'N/A'
+          tCell.innerHTML = 'N/A'
         } else if (numberOfAttempts === 1) {
-          tabCell.innerHTML = '1 Attempt'
+          tCell.innerHTML = '1 Attempt'
         } else {
-          tabCell.innerHTML = `${numberOfAttempts} Attempts`
+          tCell.innerHTML = `${numberOfAttempts} Attempts`
         }
       }
 
+      // Best scroes
       if (columns[j] === 'Best Score') {
         if (divisor) {
-          tabCell.innerHTML = `${Math.max(...scores)}`
+          tCell.innerHTML = `${Math.max(...scores)}`
         } else {
-          tabCell.innerHTML = 'N/A'
+          tCell.innerHTML = 'N/A'
         }
       }
 
+      // Average scores
       if (columns[j] === 'Average Score') {
-        let sum = scores.reduce(function(a, b) {
-          return a + b
-        }, 0)
-
         if (divisor) {
-          tabCell.innerHTML = `${Math.round(sum / divisor)}%`
+          tCell.innerHTML = `${Math.round(sum / divisor)}%`
         } else {
-          tabCell.innerHTML = 'N/A'
+          tCell.innerHTML = 'N/A'
         }
       }
+
+      // if (divisor && columns[j] === 'Average Score') {
+      //   tCell.innerHTML = `${Math.round(sum / divisor)}%`
+      // } else if (divisor && columns[j] === 'Best Score') {
+      //   tCell.innerHTML = `${Math.max(...scores)}`
+      // } else {
+      //   tCell.innerHTML = 'N/A'
+      // }
     }
   }
-
-  // FINALLY ADD THE NEWLY CREATED TABLE WITH JSON DATA TO A CONTAINER.
-  var divContainer = document.getElementById('showData')
-  divContainer.innerHTML = ''
-  divContainer.appendChild(table)
+  // add the table with the added rows to a container
+  var dataContainer = document.getElementById('studentData')
+  dataContainer.innerHTML = ''
+  dataContainer.appendChild(table)
 }
 
 buildTable()
