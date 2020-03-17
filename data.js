@@ -55,5 +55,4 @@ const fakeJSON = [
     submissions: [],
   },
 ]
-
-export default fakeJSON
+module.exports = fakeJSON

@@ -1,4 +1,60 @@
-// require fakeJSON from './data'
+const fakeJSON = [
+  {
+    name: 'JavaScript Basics',
+    submissions: [
+      {
+        score: 100,
+        token: 'f6s1EgEqGe',
+      },
+    ],
+  },
+  {
+    name: 'Arrays, Objects and Variabless',
+    submissions: [
+      {
+        score: 75,
+        token: '2h0c0Y5Vw3',
+      },
+      {
+        score: 55,
+        token: 'g9SchVUgUG',
+      },
+      {
+        score: 50,
+        token: 'mVYou2QhQK',
+      },
+    ],
+  },
+  {
+    name: 'Loops and Operators',
+    submissions: [
+      {
+        score: 90,
+        token: 'EjCfIOt0XX',
+      },
+      {
+        score: 86,
+        token: '5Vwk5tYJWl',
+      },
+      {
+        score: 84,
+        token: '64oOS7YBHu',
+      },
+      {
+        score: 80,
+        token: 'Hgzwie05rz',
+      },
+    ],
+  },
+  {
+    name: 'While and For Loops',
+    submissions: [],
+  },
+  {
+    name: 'Strings and Methods',
+    submissions: [],
+  },
+]
 
 // function makeTableHead(table, data) {
 //   let thead = table.createTHead()
@@ -14,59 +70,77 @@
 // let table = document.querySelector('table')
 // let data = Object.keys(mountains[0])
 
-function CreateTableFromJSON() {
-  var myBooks = [
-    {
-      'Book ID': '1',
-      'Book Name': 'Computer Architecture',
-      Category: 'Computers',
-      Price: '125.60',
-    },
-    {
-      'Book ID': '2',
-      'Book Name': 'Asp.Net 4 Blue Book',
-      Category: 'Programming',
-      Price: '56.00',
-    },
-    {
-      'Book ID': '3',
-      'Book Name': 'Popular Science',
-      Category: 'Science',
-      Price: '210.40',
-    },
-  ]
-
-  // EXTRACT VALUE FOR HTML HEADER.
-  // ('Book ID', 'Book Name', 'Category' and 'Price')
-  var col = []
-  for (var i = 0; i < myBooks.length; i++) {
-    for (var key in myBooks[i]) {
-      if (col.indexOf(key) === -1) {
-        col.push(key)
-      }
-    }
-  }
-
-  // CREATE DYNAMIC TABLE.
+function buildTable() {
+  // Create the table and table heads
   var table = document.createElement('table')
-
-  // CREATE HTML TABLE HEADER ROW USING THE EXTRACTED HEADERS ABOVE.
-
+  var columns = [
+    'Activity',
+    'Best Score',
+    'Average Score',
+    'Project(s) Created',
+  ]
   var tr = table.insertRow(-1) // TABLE ROW.
 
-  for (var i = 0; i < col.length; i++) {
+  // Create the top row (header) from columns array
+  for (var i = 0; i < columns.length; i++) {
     var th = document.createElement('th') // TABLE HEADER.
-    th.innerHTML = col[i]
+    th.innerHTML = columns[i]
     tr.appendChild(th)
   }
 
   // ADD JSON DATA TO THE TABLE AS ROWS.
-  for (var i = 0; i < myBooks.length; i++) {
+  for (var i = 0; i < fakeJSON.length; i++) {
     tr = table.insertRow(-1)
 
-    for (var j = 0; j < col.length; j++) {
+    // var tabCell = tr.insertCell(-1)
+    // tabCell.innerHTML = 'test'
+
+    // grabbing scores
+    let scores = fakeJSON[i]['submissions'].map(elem => {
+      return elem['score']
+    })
+    let divisor = scores.length
+
+    for (var j = 0; j < columns.length; j++) {
       var tabCell = tr.insertCell(-1)
-      tabCell.innerHTML = myBooks[i][col[j]]
+
+      // Activity name
+      if (columns[j] === 'Activity') {
+        let activityName = fakeJSON[i]['name']
+        tabCell.innerHTML = `Unit ${i + 1}: ${activityName}`
+      }
+
+      // projects created, attempts
+      if (columns[j] === 'Project(s) Created') {
+        let numberOfAttempts = fakeJSON[i]['submissions'].length
+        if (numberOfAttempts === 0) {
+          tabCell.innerHTML = 'N/A'
+        } else if (numberOfAttempts === 1) {
+          tabCell.innerHTML = '1 Attempt'
+        } else {
+          tabCell.innerHTML = `${numberOfAttempts} Attempts`
+        }
+      }
+
+      if (columns[j] === 'Best Score') {
+        if (divisor) {
+          tabCell.innerHTML = `${Math.max(...scores)}`
+        } else {
+          tabCell.innerHTML = 'N/A'
+        }
+      }
+
+      if (columns[j] === 'Average Score') {
+        let sum = scores.reduce(function(a, b) {
+          return a + b
+        }, 0)
+
+        if (divisor) {
+          tabCell.innerHTML = `${Math.round(sum / divisor)}%`
+        } else {
+          tabCell.innerHTML = 'N/A'
+        }
+      }
     }
   }
 
@@ -74,7 +148,6 @@ function CreateTableFromJSON() {
   var divContainer = document.getElementById('showData')
   divContainer.innerHTML = ''
   divContainer.appendChild(table)
-  console.log('is this even working')
 }
 
-CreateTableFromJSON()
+buildTable()
