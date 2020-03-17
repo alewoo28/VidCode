@@ -5,6 +5,8 @@
   justify-content: center;
   flex-direction: column;
   align-items: center;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande',
+    'Lucida Sans', Arial, sans-serif;
 }
 
 h1 {
@@ -12,25 +14,45 @@ h1 {
   justify-content: center;
 }
 
-/* #studentData {
-  display: flex;
-  align-items: center;
-  border-width: 2px;
-} */
-
 td,
 th {
-  border: 1px solid #999;
-  padding: 0.5rem;
+  padding: 1rem;
+  vertical-align: middle;
 }
 
 .table-head {
   background-color: #efeaf1;
   display: inline-flexbox;
+  color: #56595c;
+  text-align: left;
 }
 
-.single-row {
-  background-color: lightblue;
+.single-rowOdd {
+  background-color: #f8f8f8;
   display: inline-flexbox;
   height: 20px;
+  padding-right: 20px;
+}
+
+.single-rowEven {
+  background-color: #ffffff;
+  display: inline-flexbox;
+  height: 20px;
+  padding-right: 20px;
+}
+
+#highScore {
+  color: #b2e273;
+}
+
+#modestScore {
+  color: #42a9d6;
+}
+
+#lowScore {
+  color: #fa7921;
+}
+
+#hyperlink {
+  color: #42a9d6;
 }
