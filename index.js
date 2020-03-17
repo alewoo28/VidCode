@@ -56,6 +56,8 @@ const fakeJSON = [
   },
 ]
 
+//--------------------------------------------------------
+
 function buildTable() {
   // Create the table and table headers
   var table = document.createElement('table')
