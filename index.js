@@ -1,114 +1,80 @@
-console.log('Hello from Javascript')
+// require fakeJSON from './data'
 
-const data = [
-  {
-    name: 'JavaScript Basics',
-    submissions: [
-      {
-        score: 100,
-        token: 'f6s1EgEqGe',
-      },
-    ],
-  },
-  {
-    name: 'Arrays, Objects and Variabless',
-    submissions: [
-      {
-        score: 75,
-        token: '2h0c0Y5Vw3',
-      },
-      {
-        score: 55,
-        token: 'g9SchVUgUG',
-      },
-      {
-        score: 50,
-        token: 'mVYou2QhQK',
-      },
-    ],
-  },
-  {
-    name: 'Loops and Operators',
-    submissions: [
-      {
-        score: 90,
-        token: 'EjCfIOt0XX',
-      },
-      {
-        score: 86,
-        token: '5Vwk5tYJWl',
-      },
-      {
-        score: 84,
-        token: '64oOS7YBHu',
-      },
-      {
-        score: 80,
-        token: 'Hgzwie05rz',
-      },
-    ],
-  },
-  {
-    name: 'While and For Loops',
-    submissions: [],
-  },
-  {
-    name: 'Strings and Methods',
-    submissions: [],
-  },
-]
+// function makeTableHead(table, data) {
+//   let thead = table.createTHead()
+//   let row = thead.insertRow()
+//   for (let key of data) {
+//     let th = document.createElement('th')
+//     let text = document.createTextNode(key)
+//     th.appendChild(text)
+//     row.appendChild(th)
+//   }
+// }
 
-const express = require('express')
+// let table = document.querySelector('table')
+// let data = Object.keys(mountains[0])
 
-const app = express()
+function CreateTableFromJSON() {
+  var myBooks = [
+    {
+      'Book ID': '1',
+      'Book Name': 'Computer Architecture',
+      Category: 'Computers',
+      Price: '125.60',
+    },
+    {
+      'Book ID': '2',
+      'Book Name': 'Asp.Net 4 Blue Book',
+      Category: 'Programming',
+      Price: '56.00',
+    },
+    {
+      'Book ID': '3',
+      'Book Name': 'Popular Science',
+      Category: 'Science',
+      Price: '210.40',
+    },
+  ]
 
-app.get('/home', (req, res, next) => {
-  console.log('in get request handler')
-  res.send(`<h1>Welcome to the Home Page</h1>`)
-})
-
-app.get('/contact', (req, res, next) => {
-  res.send(`<h1>Welcome to the Contact Page</h1>`)
-})
-
-app.listen(8000)
-
-document.getElementById('')
-
-import * as data from './backend/data.json'
-
-import config from './backend/data.json'
-
-fetch('/Users/alexiswoodbury/dev/VidcodeProject/backend/data.json')
-  .then(function(resp) {
-    return resp.json()
-  })
-  .then(function(data) {
-    console.log('TEST')
-  })
-
-function makeTableHead(table, data) {
-  let thead = table.createTHead()
-  let row = thead.insertRow()
-  for (let key of data) {
-    let th = document.createElement('th')
-    let text = document.createTextNode(key)
-    th.appendChild(text)
-    row.appendChild(th)
+  // EXTRACT VALUE FOR HTML HEADER.
+  // ('Book ID', 'Book Name', 'Category' and 'Price')
+  var col = []
+  for (var i = 0; i < myBooks.length; i++) {
+    for (var key in myBooks[i]) {
+      if (col.indexOf(key) === -1) {
+        col.push(key)
+      }
+    }
   }
+
+  // CREATE DYNAMIC TABLE.
+  var table = document.createElement('table')
+
+  // CREATE HTML TABLE HEADER ROW USING THE EXTRACTED HEADERS ABOVE.
+
+  var tr = table.insertRow(-1) // TABLE ROW.
+
+  for (var i = 0; i < col.length; i++) {
+    var th = document.createElement('th') // TABLE HEADER.
+    th.innerHTML = col[i]
+    tr.appendChild(th)
+  }
+
+  // ADD JSON DATA TO THE TABLE AS ROWS.
+  for (var i = 0; i < myBooks.length; i++) {
+    tr = table.insertRow(-1)
+
+    for (var j = 0; j < col.length; j++) {
+      var tabCell = tr.insertCell(-1)
+      tabCell.innerHTML = myBooks[i][col[j]]
+    }
+  }
+
+  // FINALLY ADD THE NEWLY CREATED TABLE WITH JSON DATA TO A CONTAINER.
+  var divContainer = document.getElementById('showData')
+  divContainer.innerHTML = ''
+  divContainer.appendChild(table)
+  console.log('is this even working')
 }
 
-let table = document.querySelector('table')
-let data = Object.keys(mountains[0])
-
-const router = require('express').Router()
-const AllData = require('./backend')
-
-router.get('/data', async (req, res, next) => {
-  try {
-    console.log(AllData)
-    res.send(AllData)
-  } catch (error) {
-    next(error)
-  }
-})
+CreateTableFromJSON()
